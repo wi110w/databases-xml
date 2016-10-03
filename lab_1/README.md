@@ -1,5 +1,5 @@
 ## About lab
-Lab #1 project for course "Databases. XML"
+Lab #1 project for course "Databases. XML". Variant #5
 ## Goals
 * Fetch 20 HTML pages starting from `http://football.ua/` parsing images and texts. Next page of this site use as one of hyperlinks on current page.
 Parsing results save as XML file of the following structure:
