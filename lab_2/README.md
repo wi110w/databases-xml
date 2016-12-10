@@ -42,35 +42,35 @@ db.journal.aggregate([
 ## Map/Reduce usage
 * Get amount of readers that each librarian has served
 ```js
-mapper = Code("""
-                  function() {
-                      var key = this.librarian._id;
-                      var value = {
-                                       full_name: this.librarian.name + ' ' + this.librarian.surname,
-                                       reader_id: this.reader._id,
-                                       count: 1
-                                   };
-                      emit(key, value);
-                  }""")
+mapper = Code(
+              "function() {"
+              "    var key = this.librarian._id;"
+              "    var value = {"
+              "                     full_name: this.librarian.name + ' ' + this.librarian.surname,"
+              "                     reader_id: this.reader._id,"
+              "                     count: 1"
+              "                 };"
+              "    emit(key, value);"
+              "}")
 
-reducer = Code("""
-                   function(key, values){
-                     var reduced_values = { full_name: values[0].full_name, reader_id: null, count: 1 };
-                     for(var i = 1; i < values.length; i++) {
-                           var flag = false;
-                           for(var j = 0; j < i; j++) {
-                                if(values[j].reader_id.equals(values[i].reader_id)) {
-                                    flag = true;
-                                    break;
-                                }
-                           }
-                           if(flag){
-                                continue;
-                                }
-                           reduced_values.count += values[i].count;
-                     }
-                       return reduced_values;
-                   }""")
+reducer = Code(
+               "function(key, values){"
+               "  var reduced_values = { full_name: values[0].full_name, reader_id: null, count: 1 };"
+               "  for(var i = 1; i < values.length; i++) {"
+               "        var flag = false;"
+               "        for(var j = 0; j < i; j++) {"
+               "             if(values[j].reader_id.equals(values[i].reader_id)) {"
+               "                 flag = true;"
+               "                 break;"
+               "             }"
+               "        }"
+               "        if(flag){"
+               "             continue;"
+               "             }"
+               "        reduced_values.count += values[i].count;"
+               "  }"
+               "    return reduced_values;"
+               "}")
 ```
 
 * Get amount of lent books
