@@ -1,0 +1,49 @@
+{% extends 'library/base.html' %}
+
+{% load staticfiles %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'library/index.css' %}"/>
+{% endblock %}
+
+{% block title %}Library{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Journal</h1>
+</div>
+<table class="table table-striped table-hover table-bordered table-condensed">
+    {% if journal %}
+    <thead>
+    <tr>
+        <th class="title">Title</th>
+        <th class="date">Created on</th>
+        <th>Reader</th>
+        <th>Book</th>
+        <th>Librarian</th>
+        <th class="date">Issued on</th>
+        <th class="date">Must return on</th>
+        <th class="date">Returned on</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for record in journal %}
+    <tr>
+        <th><a href="{% url 'library:detail' record.number %}">
+            {{ record.title }} #{{ record.number }}</a></th>
+        <td>{{ record.dump_date | date:"Y-m-d H:i" }}</td>
+        <td class="name">{{ record.reader.name }} {{ record.reader.surname }}</td>
+        <td>{{ record.book.title }}</td>
+        <td class="name">{{ record.librarian.name }} {{ record.librarian.surname }}</td>
+        <td>{{ record.issue_date|date:"Y-m-d H:i" }}</td>
+        <td>{{ record.repayment_date|date:"Y-m-d H:i" }}</td>
+        <td>{{ record.real_repayment_date|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    {% else %}
+    <tr>
+        <th>No records available.</th>
+    </tr>
+    {% endif %}
+</table>
+{% endblock content %}

@@ -1,0 +1,76 @@
+{% extends 'library/base.html' %}
+
+{% load staticfiles %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'library/statistics.css' %}"/>
+{% endblock %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<form action="{% url 'library:statistics' %}" method="get" class="form-inline">
+    <div class="form-group">
+        {{ form.year.errors }}
+        {{ form.year.label_tag }}
+        {{ form.year }}
+    </div>
+    <input type="submit" class="btn btn-default" value="Search">
+</form>
+<div class="page-header">
+    <h1>Books lent during the year</h1>
+</div>
+<table class="table table-bordered table-condensed">
+{% if records %}
+<tr>
+    <th class="book-title">Book's title</th>
+    <th class="amount">Times</th>
+</tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.book_title }}</td>
+        <td>{{ record.amount }}</td>
+    </tr>
+{% endfor %}
+    {% else %}
+    <p class="lead">No records available.</p>
+{% endif %}
+</table>
+<div class="page-header">
+    <h1>Books lent</h1>
+</div>
+<table class="table table-bordered table-condensed">
+{% if books %}
+<tr>
+    <th class="stat-title">Title</th>
+    <th class="taken">Taken</th>
+</tr>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.taken }}</td>
+    </tr>
+{% endfor %}
+    {% else %}
+    <p class="lead">No books available.</p>
+{% endif %}
+</table>
+<div class="page-header">
+    <h1>Top librarians</h1>
+</div>
+<table class="table table-bordered table-condensed">
+{% if top_libs %}
+<tr>
+    <th class="lib-name">Librarian's name</th>
+    <th class="readers-served">Readers served</th>
+</tr>
+    {% for lib in top_libs %}
+    <tr>
+        <td>{{ lib.full_name }}</td>
+        <td>{{ lib.readers_served }}</td>
+    </tr>
+{% endfor %}
+    {% else %}
+    <p class="lead">No librarians is on top.</p>
+{% endif %}
+</table>
+{% endblock content %}

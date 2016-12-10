@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reader</title>
+</head>
+<body>
+    <h1>{{ reader.name }}'s Profile</h1>
+    <p>Name: {{ reader.name }}</p>
+    <p>Surname: {{ reader.surname }}</p>
+    <p>Usertype: {{ reader.usertype }}</p>
+    <p>Registration date: {{ reader.registration_date | date:"Y-m-d H:i" }}</p>
+    <p>Books offered: {{ reader.books_offered }}</p>
+    <p>Is author: {{ reader.is_author }}</p>
+</body>
+</html>

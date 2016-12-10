@@ -1,0 +1,19 @@
+body {
+    padding-top: 70px;
+}
+
+.info-table {
+    text-align: left;
+}
+
+.info-table > caption {
+    text-align: left;
+    font: 200% 'Times New Roman';
+    border-bottom: 2px solid #a3a3a3;
+    margin-bottom: 15px;
+}
+
+.info-table select
+{
+    width: 100%;
+}

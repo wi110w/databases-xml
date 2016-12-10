@@ -1,0 +1,25 @@
+body {
+    padding-top: 70px;
+}
+
+#populate-table {
+    width: 400px;
+    margin-left: 800px;
+}
+
+#populate-table > caption {
+    font: 100% sans-serif;
+    border-bottom: 1px solid #8f8f8f;
+}
+
+#populate-table tr td {
+    text-align: center;
+}
+
+th.stat-title {
+    width: 50%;
+}
+
+table#stats-filter {
+    max-width: 320px;
+}

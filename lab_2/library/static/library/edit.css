@@ -1,0 +1,14 @@
+.edit-table > caption {
+    font: 200% 'Times New Roman';
+    text-align: left;
+    border-bottom: 2px solid #868686;
+    margin-bottom: 15px;
+}
+
+.edit-table {
+    text-align: left;
+}
+
+.edit-table select {
+    width: 100%;
+}
