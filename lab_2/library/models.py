@@ -3,6 +3,7 @@ from operator import itemgetter
 from pymongo import MongoClient
 from django.utils import timezone
 from bson.code import Code
+from bson.objectid import ObjectId
 from faker import Faker
 from random import randint
 
@@ -24,29 +25,29 @@ for i in range(5):
 
 def fill_books():
     for i in range(20):
-        db.books.insert({"title": titles[randint(0, 9)],
-                         "genre": genres[randint(0, 4)],
-                         "author": fake.name(),
-                         "publication_date": fake.date_time_this_decade(),
-                         "serial": serial[randint(0, 1)]})
+        db.books.insert_one({"title": titles[randint(0, 9)],
+                             "genre": genres[randint(0, 4)],
+                             "author": fake.name(),
+                             "publication_date": fake.date_time_this_decade(),
+                             "serial": serial[randint(0, 1)]})
 
 
 def fill_librarians():
     for i in range(20):
-        db.librarians.insert({"name": fake.first_name(),
-                              "surname": fake.last_name(),
-                              "usertype": 'Librarian',
-                              "registration_date": fake.date_time_this_decade()})
+        db.librarians.insert_one({"name": fake.first_name(),
+                                  "surname": fake.last_name(),
+                                  "usertype": 'Librarian',
+                                  "registration_date": fake.date_time_this_decade()})
 
 
 def fill_readers():
     for i in range(20):
-        db.readers.insert({"name": fake.first_name(),
-                           "surname": fake.last_name(),
-                           "usertype": 'Reader',
-                           "registration_date": fake.date_time_this_decade(),
-                           "books_offered": randint(1, 5),
-                           "is_author": is_author[randint(0, 1)]})
+        db.readers.insert_one({"name": fake.first_name(),
+                               "surname": fake.last_name(),
+                               "usertype": 'Reader',
+                               "registration_date": fake.date_time_this_decade(),
+                               "books_offered": randint(1, 5),
+                               "is_author": is_author[randint(0, 1)]})
 
 
 def fill_journal():
@@ -55,12 +56,10 @@ def fill_journal():
     readers = get_readers()
     librarians = get_librarians()
     for i in range(100):
-        book = get_book_by_title(books[randint(0, 19)][0])
-        reader_name = readers[randint(0, 19)][0].split()
-        reader = get_reader_by_name(reader_name[0])
-        lib_name = librarians[randint(0, 19)][0].split()
-        librarian = get_librarian_by_name(lib_name[0])
-        db.journal.insert({
+        book = get_book_by_id(books[randint(0, 19)][0])
+        reader = get_reader_by_id(readers[randint(0, 19)][0])
+        librarian = get_librarian_by_id(librarians[randint(0, 19)][0])
+        db.journal.insert_one({
             "number": randint(1, 1000),
             "title": 'Record',
             "dump_date": fake.date_time_this_decade(),
@@ -109,40 +108,39 @@ def get_librarians():
     return librarians
 
 
-def get_book_by_title(book_title):
-    return db.books.find_one({"title": book_title})
+def get_book_by_id(book_id):
+    return db.books.find_one({"_id": book_id})
 
 
 def get_record_by_number(number):
     return db.journal.find_one({"number": int(number)})
 
 
-def get_reader_by_name(name):
-    return db.readers.find_one({"name": name})
+def get_reader_by_id(reader_id):
+    return db.readers.find_one({"_id": reader_id})
 
 
-def get_librarian_by_name(name):
-    return db.librarians.find_one({"name": name})
+def get_librarian_by_id(lib_id):
+    return db.librarians.find_one({"_id": lib_id})
 
 
 def delete_record(number):
-    db.journal.remove({"number": int(number)})
+    db.journal.delete_one({"number": int(number)})
 
 
 def reset():
-    db.journal.remove({})
-    db.readers.remove({})
-    db.librarians.remove({})
-    db.books.remove({})
+    db.journal.drop()
+    db.readers.drop()
+    db.librarians.drop()
+    db.books.drop()
 
 
-def edit_record(number, title, book_title, reader_name, librarian_name, issue_date, repay_date, real_repay_date):
-    record = get_record_by_number(number)
-    reader = get_reader_by_name(reader_name)
-    librarian = get_librarian_by_name(librarian_name)
-    book = get_book_by_title(book_title)
-    db.journal.update(
-        record,
+def edit_record(number, title, book_id, reader_id, librarian_id, issue_date, repay_date, real_repay_date):
+    reader = get_reader_by_id(ObjectId(reader_id))
+    librarian = get_librarian_by_id(ObjectId(librarian_id))
+    book = get_book_by_id(ObjectId(book_id))
+    db.journal.update_one(
+        {'number': int(number)},
         {
             "$set":
                 {
@@ -150,21 +148,19 @@ def edit_record(number, title, book_title, reader_name, librarian_name, issue_da
                     "book": book,
                     "reader": reader,
                     "librarian": librarian,
-                    "issue_date": issue_date,
-                    "repayment_date": repay_date,
-                    "real_repayment_date": real_repay_date
+                    "issue_date": datetime.combine(issue_date, time.min),
+                    "repayment_date": datetime.combine(repay_date, time.min),
+                    "real_repayment_date": datetime.combine(real_repay_date, time.min)
                 }
         }
     )
 
 
-def add_record(title, book_title, reader_name, librarian_name, issue_date, repay_date, real_repay_date):
+def add_record(title, book_id, reader_id, librarian_id, issue_date, repay_date, real_repay_date):
     journal = sort_by_number()
-    reader_name = reader_name.split()
-    reader = get_reader_by_name(reader_name[0])
-    librarian_name = librarian_name.split()
-    librarian = get_librarian_by_name(librarian_name[0])
-    book = get_book_by_title(book_title)
+    reader = get_reader_by_id(ObjectId(reader_id))
+    librarian = get_librarian_by_id(ObjectId(librarian_id))
+    book = get_book_by_id(ObjectId(book_id))
     today = timezone.now()
     db.journal.insert_one(
         {

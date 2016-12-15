@@ -29,22 +29,22 @@ def detail(request, record_num):
     return render(request, 'library/detail.html', context)
 
 
-def detail_reader(request, reader_name):
-    reader = get_reader_by_name(reader_name)
+def detail_reader(request, reader_id):
+    reader = get_reader_by_id(reader_id)
     context = {'reader': reader}
 
     return render(request, 'library/reader_info.html', context)
 
 
-def detail_librarian(request, lib_name):
-    librarian = get_librarian_by_name(lib_name)
+def detail_librarian(request, lib_id):
+    librarian = get_librarian_by_id(lib_id)
     context = {'lib': librarian}
 
     return render(request, 'library/librarian_info.html', context)
 
 
-def detail_book(request, book_title):
-    book = get_book_by_title(book_title)
+def detail_book(request, book_id):
+    book = get_book_by_id(book_id)
     context = {'book': book}
 
     return render(request, 'library/book_info.html', context)
@@ -87,13 +87,16 @@ def edit_record(request, record_num):
             repay_date = form.cleaned_data['repay_date']
             real_repay_date = form.cleaned_data['real_repay_date']
             db_edit_record(record_num, title, book, reader, librarian, issue_date, repay_date, real_repay_date)
-            return redirect('library:detail')
+            return redirect('library:detail', record_num=record_num)
     else:
         record = get_record_by_number(record_num)
         form = AddEditForm(initial=
-                           {'title': record['title'], 'reader': record['reader'],
-                            'librarian': record['librarian'], 'book': record['book'],
-                            'issue_date': record['issue_date'], 'repay_date': record['repayment_date'],
+                           {'title': record['title'],
+                            'reader': record['reader']['_id'],
+                            'librarian': record['librarian']['_id'],
+                            'book': record['book'],
+                            'issue_date': record['issue_date'],
+                            'repay_date': record['repayment_date'],
                             'real_repay_date': record['real_repayment_date']})
 
     context = {'form': form, 'record': record}
@@ -116,7 +119,6 @@ def statistics(request):
     records = []
     books = get_lent_books()
     top_libs = get_top_librarians()
-    print(top_libs)
     if request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():

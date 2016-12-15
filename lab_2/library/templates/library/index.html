@@ -34,9 +34,9 @@
         <td class="name">{{ record.reader.name }} {{ record.reader.surname }}</td>
         <td>{{ record.book.title }}</td>
         <td class="name">{{ record.librarian.name }} {{ record.librarian.surname }}</td>
-        <td>{{ record.issue_date|date:"Y-m-d H:i" }}</td>
-        <td>{{ record.repayment_date|date:"Y-m-d H:i" }}</td>
-        <td>{{ record.real_repayment_date|date:"Y-m-d H:i" }}</td>
+        <td>{{ record.issue_date|date:"Y-m-d" }}</td>
+        <td>{{ record.repayment_date|date:"Y-m-d" }}</td>
+        <td>{{ record.real_repayment_date|date:"Y-m-d" }}</td>
     </tr>
     {% endfor %}
     </tbody>
