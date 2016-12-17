@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ record.title }}</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'library_redis/detail.css' %}"/>
+</head>
+<body>
+    <a href="{% url 'library_redis:index' %}" id="back">Back</a>
+    <table id="info-table">
+        <caption>{{ record.title }} #{{ record.number }}</caption>
+        <tr>
+            <th>Reader</th>
+            <td><a href="{% url 'library_redis:detail_reader' record.reader.name %}">
+                {{ record.reader.name }} {{ record.reader.surname }}</a></td>
+        </tr>
+        <tr>
+            <th>Librarian</th>
+            <td><a href="{% url 'library_redis:detail_librarian' record.librarian.name %}">
+                {{ record.librarian.name }} {{ record.librarian.surname }}</a></td>
+        </tr>
+        <tr>
+            <th>Book</th>
+            <td><a href="{% url 'library_redis:detail_book' record.book.title %}">
+                {{ record.book.title }}</a></td>
+        </tr>
+        <tr>
+            <th>Issue date</th>
+            <td>{{ record.issue_date | date:"Y-m-d H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Must return on</th>
+            <td>{{ record.repayment_date | date:"Y-m-d H:i" }}</td>
+        </tr>
+        <tr>
+            <th>Returned on</th>
+            <td>{{ record.real_repayment_date | date:"Y-m-d H:i" }}</td>
+        </tr>
+    </table>
+    <table id="action-table">
+        <tr>
+            <td>
+                <a href="{% url 'library_redis:delete' record.number %}">
+                    Delete
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'library_redis:edit' record.number %}">
+                    Edit
+                </a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

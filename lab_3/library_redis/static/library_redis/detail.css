@@ -1,0 +1,66 @@
+body {
+    font-family: Calibri;
+    font-size: 18px;
+}
+
+body a {
+    text-decoration: none;
+    color: black;
+}
+
+body a:hover {
+    color: crimson;
+}
+
+#info-table {
+    text-align: center;
+    margin-left: 400px;
+    width: 400px;
+}
+
+#info-table > caption {
+    font: 300% sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    border-bottom: 2px solid #8f8f8f;
+    margin-bottom: 15px;
+    color: #028429;
+}
+
+#info-table tr td a {
+    text-decoration: none;
+}
+
+#info-table tr td a:hover {
+    color: crimson;
+}
+
+#action-table {
+    text-align: center;
+    margin-left: 550px;
+    margin-top: 20px;
+    width: 400 px;
+}
+
+#action-table tr td {
+    border: 3px solid green;
+}
+
+#action-table tr td a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#action-table tr td a:hover {
+    color: crimson;
+}
+
+#back {
+    border: 3px solid green;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+}

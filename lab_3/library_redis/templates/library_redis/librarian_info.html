@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Librarian</title>
+</head>
+<body>
+    <h1>{{ lib.name }}'s Profile</h1>
+    <p>Name: {{ lib.name }}</p>
+    <p>Surname: {{ lib.surname }}</p>
+    <p>Usertype: {{ lib.usertype }}</p>
+    <p>Registration date: {{ lib.registration_date | date:"Y-m-d H:i" }}</p>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Statistic</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'library_redis/edit.css' %}">
+</head>
+<body>
+    <form action="{% url 'library_redis:edit' record.number %}" method="post">
+        {% csrf_token %}
+        <table class="edit-table">
+            {{ form.as_table }}
+            <caption>{{ record.title }} #{{ record.number }}</caption>
+        </table>
+        <input type="submit" value="Edit">
+    </form>
+    <form action="{% url 'library_redis:detail' record.number %}" method="get">
+        <input type="submit" value="Cancel">
+    </form>
+</body>
+</html>
