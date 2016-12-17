@@ -17,7 +17,7 @@ def index(request):
         pages = paginator.page(1)
     except EmptyPage:
         pages = paginator.page(paginator.num_pages)
-    context = {'journal': journal, 'pages': pages}
+    context = {'pages': pages}
 
     return render(request, 'library/index.html', context)
 
