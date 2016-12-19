@@ -255,7 +255,7 @@ def get_top_librarians():
 
     reducer = Code("""
                    function(key, values){
-                     var reduced_values = { full_name: values[0].full_name, reader_id: null, count: 1 };
+                     var reduced_values = values[0];
                      for(var i = 1; i < values.length; i++) {
                            var flag = false;
                            for(var j = 0; j < i; j++) {
