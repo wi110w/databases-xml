@@ -163,7 +163,6 @@ def edit_record(number, title, book_id, reader_id, librarian_id, issue_date, rep
     )
 
 
-
 def add_record(title, book_id, reader_id, librarian_id, issue_date, repay_date, real_repay_date):
     journal = sort_by_number()
     reader = get_reader_by_id(ObjectId(reader_id))
@@ -263,7 +262,7 @@ def get_top_librarians():
 
     reducer = Code("""
                    function(key, values){
-                     var reduced_values = { full_name: values[0].full_name, reader_id: null, count: 1 };
+                     var reduced_values = values[0];
                      for(var i = 1; i < values.length; i++) {
                            var flag = false;
                            for(var j = 0; j < i; j++) {
