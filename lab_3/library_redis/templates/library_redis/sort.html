@@ -12,7 +12,7 @@
     <h1>Journal</h1>
 </div>
 <table class="table table-striped table-hover table-bordered table-condensed">
-    {% if journal %}
+    {% if pages.object_list %}
     <thead>
     <tr>
         <th class="title">Title</th>
@@ -26,7 +26,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for record in journal %}
+    {% for record in pages.object_list %}
     <tr>
         <th><a href="{% url 'library_redis:detail' record.number %}">
             {{ record.title }} #{{ record.number }}</a></th>
@@ -46,4 +46,24 @@
     </tr>
     {% endif %}
 </table>
+{% if pages.paginator.count %}
+<nav aria-label="Page navigation" class="text-center">
+    <ul class="pager">
+        <li>
+            {% if pages.has_previous %}
+            <a href="?page={{ pages.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            {% endif %}
+        </li>
+        <li>
+            {% if pages.has_next %}
+            <a href="?page={{ pages.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+{% endif %}
 {% endblock content %}

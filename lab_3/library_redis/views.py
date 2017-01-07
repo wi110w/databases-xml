@@ -112,7 +112,15 @@ def reset_data(request):
 
 def sort_data(request):
     sorted_journal = sort_by_dump_date()
-    context = {'journal': sorted_journal}
+    paginator = Paginator(sorted_journal, 10)
+    page = request.GET.get('page', 1)
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+    context = {'pages': pages}
     return render(request, 'library_redis/sort.html', context)
 
 
