@@ -1,6 +1,6 @@
 from datetime import time, datetime
 from operator import itemgetter
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING, ASCENDING
 from django.utils import timezone
 from bson.code import Code
 from bson.objectid import ObjectId
@@ -178,27 +178,11 @@ def add_record(title, book_id, reader_id, librarian_id, issue_date, repay_date, 
 
 
 def sort_by_dump_date():
-    journal = db.journal.aggregate([{
-        "$sort": {
-            "dump_date": -1
-        }
-    }])
-
-    return journal
+    return db.journal.find({}, sort=[('dump_date', DESCENDING)])
 
 
 def sort_by_number():
-    sorted_journal = []
-    journal = db.journal.aggregate([{
-        "$sort": {
-            "number": -1
-        },
-    }])
-
-    for record in journal:
-        sorted_journal.append({'title': record['title'], 'number': record['number']})
-
-    return sorted_journal
+    return db.journal.find({}, sort=[('number', DESCENDING)])
 
 
 def get_lent_books():
